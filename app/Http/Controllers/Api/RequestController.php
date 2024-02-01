@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Request;
+use App\Models\Request as Product;
 use App\Http\Controllers\Controller;
 
 class RequestController extends Controller
@@ -12,7 +12,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        return Request::all();
+        return Product::all();
     }
 
     /**
@@ -20,9 +20,15 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        // $created_request = Request::create($request->all());
+        $request->add(['status' => 'Active']);
 
-        return $request;
+        $request->validation([
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required'
+        ]);
+
+        return Product::create($request->all());
     }
 
     /**
